@@ -1,0 +1,103 @@
+created server and client folders inside server created a file server.js
+now right click on the server.js file click open in tregrated ternimsl and write
+npm init now from package .json remove the test from scripts
+then in the same terminal run npm i express cors dotenv nodemon jsonwebtoken mongoose bcryptjs nodemailer cookie-parser
+then in package.json inside type write module
+
+now in our server.js we write in the starting {
+import express from 'express';
+import cors from 'cors';
+import 'dotenv/config';
+import cookieParser from 'cookie-parser';
+
+const app=express();
+const port= process.env.PORT || 4000
+
+app.use(express.json());
+app.use(cookieParser());
+app.use(cors({credentials: true})) //credentials=True allows the server to accept cookies from the client
+
+app.get('/',(req,res)=>{ //this is a test route to see if the server is working
+    res.send('Hello World');
+});
+app.listen(port,()=>console.log(`Server started on PORT: ${port}`)); //this will start the server on port 4000 but if wetry to go to localhost:4000 we will get a cannot GET/ error if we didnt set up app.get('/')
+}
+
+now for any chages in the server we had to 
+restart the server again so to get rid of this 
+we use nodemon
+
+so to setup nodemon in scripts(package.json)
+keep scrips as it is just add a comma and add
+"server": "nodemon server.js"
+now to use server use npm run server 
+earlier we were using node server.js
+using this whenever we do any change in the server it will restart on its own
+
+now we need to connect to mongo db so create a new cluster store its username and password for future refernce
+after cluster created go to clusters under database now click on connect and copy the conection string 
+then go to network access in atlas and delete the current ip then click add ip address and choose allow acces from anywhere and click confirm being used this will solve the problem where we had to
+add ip again and again
+store the mongo db connection URL in env file
+remember to remove / at end from connection link when storing mongo db url
+
+now we need to setup mongodb so create a new folder in server named config
+inside that create a file mongodb.js and write the setting up code
+now import that mongodb function in server.js and use it and we see in server mongoose connected is shown
+
+now we need to create user models its like a blueprint for login/signup
+in server folder create folder models and create file userModel.js
+
+now in server create controller folder where controllers of all api's we create will be stored and their functions are written
+now we are creating a cookie during signup itself too so that users will be automatically logged in as soon as they signup
+in login also same sa hi way see passwords match and all if all valid generate token and cookie
+when loggin out we just clear the token from the cookie
+
+now create a folder in server called routes which will map these functios to actual api's we will use
+now we have to add this auth router in server.js file and use it 
+
+now test these api's we created using postman
+go run the route and go to body and select raw and  give input
+{
+    "email" :"whatever@gmail.com"
+    "password" :"whatever123"
+}
+now send request and see mongodb to see actually happens or not see in postman terminal we get our cookie
+to see in cluster go to our cluster then go browse collection or use the connection string to open in compass 
+
+now we need to send a welcome email to anyone who signups using nodemailer
+so in congif folder create another file nodemailer.js
+now to create the SMTP cridentials we use a website called brevo can be done via google too
+login and click on profile and click SMTP&API
+use the cridentials
+add these credentials in ENV file and use in the nodemailer config file
+
+now in register cotroller after generating the cookie we have to send the mail so use the nodemailer's transporter there
+test api again
+
+now we need to create sendverificationotp so we can send user the otp and verify the email provided by him is his or not
+now the work of this was to just send the otp but now we say user to enter that otp on the ui and we need to compare the otp's
+so we create a controler again 
+
+so now we saw in all the controller functions we were fetching userId from req.body but how will user give userId from req.body
+actually userId will be fetched from the token and token is stored in the cookie
+so now we need a middleware which will fetch this userId from the token
+so in server folder create another folder called middleware and write the middleware ka functionality there
+now add the routes of these newly created functions in authRoutes.js
+
+now try out these apis and confirm account verified or not by looking at atlas or compass
+
+now we will create a function isAuthenticated that will tell us if user is signed in or not
+this will run after our middle ware so if middle ware was implemented correctly this controller will run fine otherwise error
+
+now we just need to add the last functionality ie. if someone forgets password send them password reset otp and another api 
+which will reset the password using that otp now create routes also of these 
+
+now we will create another api which will return users details like his name email verified or not
+in another file inside controllers also write its path in aother routes file in the same folder ie.userRoutes.js
+now also in server.js add this route remember this is a get request
+
+remember when fetch things like userID from token we will do const userId=req.userId; not const userId=req.body.userId;
+but if we see something that will be fetched from the UI then we will use req.body.whatever
+
+    BACKEND FINISH

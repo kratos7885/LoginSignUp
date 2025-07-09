@@ -1,0 +1,40 @@
+now in client side create react app delete unnecessary things in src create folders page,contect,components
+in pages create pages emailverify,home,login,resetpassword
+also install some packages we will need them later npm install axios react-router-dom react-toastify
+setup all the pages using rafce
+now we will setup react router for separate pages
+in index.js import browserrouter
+put app componenet in browser router
+in app.js import route and routes from react-router-dom and set up the routes
+create a navbar component
+and the other componenets are created using GPT but until now create the login page,home page,navbar,heador for homapage
+
+Now we knew to handle props we had a lot of difficulty to pass them
+espesically if it was very nested structure like C1 in C2 in C3 in C4 now we want to use something that C4 used in C1
+so for that we had to pass props from 4->3->->2->1
+what we can do instead is use createContext which make the variables used in C4 globaly so anyone can use them without
+passing them as props in the componenets read doc. on w3 Shools very good explanantion
+in context folder create a file AppContext.js
+
+now in env file put our backend link so we can use it to connect to our frontend
+now we have to use that context we created in our login page to conect backend with frontend
+now to access context functions and variables access like const {backendUrl}=useContext(AppContent)
+but before using that in index.js inside browser router put app compoent inside another tag
+now we have to create submit functionality for submit button in login page
+
+to add toast in out project
+in app.js outside routes add toastcontainer see how it is done
+now we might get CORS error so got server.js file in the CORS line we also have to add our frontend wala link
+after all this our login and signup is done and cookies are being created we are getting redirected to home page after login
+but we have to redirect them to the dashboard
+
+but before that we want a userfrofile to be shown as user login's in so he can get functionalies like verify email 
+and logout and delete account(added by me) now remember in authcontroller we made an endpoint named is-auth this will
+be used to know if user is authorized or not if authorized then only profile will shown
+so call that in AppContext made changes that is-auth api needs to be set GET
+now is-auth is made in a way that the middle ware is called now if middle ware runs fine 
+meaaning token is present we will be given access otherwise no access
+so in app cotext we keep the function getAuthState handy so in whatever page we want stuff only to be shown
+to authorize users only we call this function and check if authorized or not 
+
+now we also have to put the global getuser global function after login so we can fetch all the data
